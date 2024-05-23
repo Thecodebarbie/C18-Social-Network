@@ -1,4 +1,4 @@
-const { Video, User } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
   async getVideos(req, res) {
