@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const Response = require('./Reaction');
 
 // Schema to create Post model
-const videoSchema = new Schema(
+const thoughtSchema = new Schema(
   {
     published: {
       type: Boolean,
@@ -32,7 +32,7 @@ const videoSchema = new Schema(
 );
 
 // Create a virtual property `responses` that gets the amount of response per video
-videoSchema
+thoughtSchema
   .virtual('getResponses')
   // Getter
   .get(function () {
@@ -40,6 +40,6 @@ videoSchema
   });
 
 // Initialize our Video model
-const Video = model('video', videoSchema);
+const Thought = model('thought', thoughtSchema);
 
-module.exports = Video;
+module.exports = Thought;
