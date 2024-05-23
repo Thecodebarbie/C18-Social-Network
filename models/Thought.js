@@ -1,27 +1,27 @@
 const { Schema, model } = require('mongoose');
-const Response = require('./Reaction');
+const reactionSchema = require('./Reaction');
 
 // Schema to create Post model
 const thoughtSchema = new Schema(
   {
-    published: {
-      type: Boolean,
-      default: false,
+    thoughtText: {
+      type: String,
+      required: true,
+      minLength: 1,
+      maxLength: 280,
     },
     createdAt: {
       type: Date,
       default: Date.now,
+      get:date=>date.toLocaleDateScript()
+      // Format date as MM/DD/YYYY
     },
-    advertiserFriendly: {
-      type: Boolean,
-      default: true,
-    },
-    description: {
+    username:{
       type: String,
-      minLength: 8,
-      maxLength: 500,
+      required: true,
     },
-    responses: [Response],
+    
+    reaction: [reactionSchema],
   },
   {
     toJSON: {
