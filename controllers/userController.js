@@ -3,9 +3,12 @@ const User = require('../models/User');
 module.exports = {
   async getUsers(req, res) {
     try {
-      const users = await User.find().populate("videos");
+      console.log('Fetching all users'); // Debug log
+      const users = await User.find().populate("thoughts");
+      console.log('Fetched users:', users); // Debug log
       res.json(users);
     } catch (err) {
+      console.error('Error fetching users:', err); // Detailed error log
       res.status(500).json(err);
     }
   },
