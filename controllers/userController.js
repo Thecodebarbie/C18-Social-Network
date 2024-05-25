@@ -93,4 +93,26 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  async removeUserFriend(req, res) {
+    try {
+      const { userId, friendId } = req.params;
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
+      }
+
+      const friendIndex = user.friends.indexOf(friendId);
+      if (friendIndex === -1) {
+        return res.status(400).json({ message: 'Friend not found' });
+      }
+
+      user.friends.splice(friendIndex, 1);
+      await user.save();
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
 };
