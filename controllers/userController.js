@@ -4,7 +4,7 @@ module.exports = {
   async getUsers(req, res) {
     try {
       console.log('Fetching all users'); // Debug log
-      const users = await User.find().populate("thoughts");
+      const users = await User.find().populate("thoughts").populate('friends');
       console.log('Fetched users:', users); // Debug log
       res.json(users);
     } catch (err) {
@@ -15,6 +15,8 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
+        .populate('thoughts')
+        .populate('friends')
         .select('-__v');
 
       if (!user) {
@@ -64,5 +66,31 @@ module.exports = {
     } catch (err) {
       res.status(500).json(err);
     }
-  }
+  },
+  async addUserFriend(req, res) {
+    try {
+      const { userId, friendId } = req.params;
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
+      }
+
+      const friend = await User.findById(friendId);
+      if (!friend) {
+        return res.status(404).json({ message: 'No friend found with that ID' });
+      }
+
+      if (user.friends.includes(friendId)) {
+        return res.status(400).json({ message: 'Friend already added' });
+      }
+
+      user.friends.push(friendId);
+      await user.save();
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
