@@ -38,7 +38,7 @@ module.exports = {
         });
       }
 
-      res.json('Created the thought 🎉');
+      res.json('Your thought has been created 🎉');
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -72,7 +72,7 @@ module.exports = {
 
       const user = await User.findOneAndUpdate(
         { thoughts: req.params.thoughtId },
-        { $pull: { videos: req.params.thoughtId } },
+        { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
       );
 
